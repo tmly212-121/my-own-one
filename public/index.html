@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduShare - Online Whiteboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+</head>
+<body>
+    <div id="login-page">
+        <h1>EduShare</h1>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="login-btn">Login</button>
+        <button id="create-room-btn">Create Room</button>
+        <input type="text" id="room-id" placeholder="Room ID">
+        <button id="join-room-btn">Join Room</button>
+    </div>
+
+    <div id="whiteboard-page" style="display: none;">
+        <div id="toolbar">
+            <button id="pen-btn">Pen</button>
+            <button id="eraser-btn">Eraser</button>
+            <input type="color" id="color-picker">
+            <input type="range" id="size-slider" min="1" max="20" value="5">
+            <button id="clear-btn">Clear</button>
+            <button id="save-btn">Save</button>
+            <input type="file" id="pdf-upload" accept=".pdf">
+            <button id="prev-page">Previous Page</button>
+            <button id="next-page">Next Page</button>
+            <span id="page-num"></span> / <span id="page-count"></span>
+           
+        </div>
+        <div id="content-wrapper">
+            <div id="pdf-container">
+                <canvas id="pdf-render"></canvas>
+                <canvas id="whiteboard"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
