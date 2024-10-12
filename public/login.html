@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول للغرفة</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button, input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>تسجيل الدخول للغرفة</h2>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="text" id="roomId" placeholder="رقم الغرفة">
+        <button onclick="createRoom()">إنشاء غرفة جديدة</button>
+        <button onclick="joinRoom()">الدخول إلى الغرفة</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBT6ImgSSXtBkpyY--PagY1-FOpoJffsec",
+            authDomain: "fir-test-2c9a7.firebaseapp.com",
+            databaseURL: "https://fir-test-2c9a7-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "fir-test-2c9a7",
+            storageBucket: "fir-test-2c9a7.appspot.com",
+            messagingSenderId: "510700294934",
+            appId: "1:510700294934:web:f3ebf71a6986d8a9f4b637",
+            measurementId: "G-QB4P82G3T4"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function createRoom() {
+            const username = document.getElementById('username').value;
+            const roomId = document.getElementById('roomId').value;
+            if (!username) {
+                alert('الرجاء إدخال اسم المستخدم');
+                return;
+            }
+            if (!roomId) {
+                alert('الرجاء إدخال رقم الغرفة');
+                return;
+            }
+            database.ref('rooms/' + roomId).set({
+                created: true
+            }).then(() => {
+                window.location.href = `index.html?room=${roomId}&username=${encodeURIComponent(username)}`;
+            }).catch((error) => {
+                console.error('Error creating room:', error);
+                alert('حدث خطأ أثناء إنشاء الغرفة');
+            });
+        }
+
+        function joinRoom() {
+            const username = document.getElementById('username').value;
+            const roomId = document.getElementById('roomId').value;
+            if (!username) {
+                alert('الرجاء إدخال اسم المستخدم');
+                return;
+            }
+            if (!roomId) {
+                alert('الرجاء إدخال رقم الغرفة');
+                return;
+            }
+            database.ref('rooms/' + roomId).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    window.location.href = `index.html?room=${roomId}&username=${encodeURIComponent(username)}`;
+                } else {
+                    alert('الغرفة غير موجودة');
+                }
+            }).catch((error) => {
+                console.error('Error joining room:', error);
+                alert('حدث خطأ أثناء الانضمام إلى الغرفة');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,46 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduShare - Online Whiteboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 </head>
 <body>
-    <div id="login-page">
-        <h1>EduShare</h1>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button id="login-btn">Login</button>
-        <button id="create-room-btn">Create Room</button>
-        <input type="text" id="room-id" placeholder="Room ID">
-        <button id="join-room-btn">Join Room</button>
+    <div id="controlsContainer">
+        <input type="file" id="pdfInput" accept=".pdf" />
+        <button onclick="clearCanvas()">مسح الكل</button>
+        <input type="color" id="colorPicker" value="#FF0000">
+        <input type="number" id="lineWidthInput" value="2" min="1" max="20" onchange="updateLineWidth()">
+        <button onclick="prevPage()">الصفحة السابقة</button>
+        <button onclick="nextPage()">الصفحة التالية</button>
+        <input type="number" id="pageInput" min="1" value="1" style="width: 50px;">
+        <button onclick="goToPage()">انتقال</button>
+
+        <label for="pdfScale">scale:</label>
+        <input type="number" id="pdfScale" value="2" min="0.5" max="5" step="0.1" onchange="updatePdfScale()">
+        <button onclick="toggleWhiteSheet()"> إخفاء / إظهار</button>
+        <select id="shapeSelector" onchange="updateDrawingMode()">
+            <option value="freehand">رسم حر K</option>
+            <option value="rectangle">مستطيل X</option>
+            <option value="circle">دائرة C</option>
+            <option value="triangle">مثلث V</option>
+            <option value="line">خط مستقيم L</option>
+        </select>
     </div>
 
-    <div id="whiteboard-page" style="display: none;">
-        <div id="toolbar">
-            <button id="pen-btn">Pen</button>
-            <button id="eraser-btn">Eraser</button>
-            <input type="color" id="color-picker">
-            <input type="range" id="size-slider" min="1" max="20" value="5">
-            <button id="clear-btn">Clear</button>
-            <button id="save-btn">Save</button>
-            <input type="file" id="pdf-upload" accept=".pdf">
-            <button id="prev-page">Previous Page</button>
-            <button id="next-page">Next Page</button>
-            <span id="page-num"></span> / <span id="page-count"></span>
-           
-        </div>
-        <div id="content-wrapper">
-            <div id="pdf-container">
-                <canvas id="pdf-render"></canvas>
-                <canvas id="whiteboard"></canvas>
-            </div>
-        </div>
+    <div id="activeUsers">
+        <ul id="userList"></ul>
     </div>
-
-    <script src="/socket.io/socket.io.js"></script>
+    
+    <div id="canvasContainer">
+        <canvas id="pdfCanvas" width="2000" height="2000"></canvas>
+        <canvas id="whiteSheetCanvas" width="2000" height="2000"></canvas>
+        <canvas id="drawingCanvas" width="2000" height="2000"></canvas>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
